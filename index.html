@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="bullet.js"></script>
+    <script src="main.js"></script>
+</head>
+
+<body onload="draw()">
+<canvas id="myCanvas" width="1200" height="600" style="background: white ;border: 1px">
+</canvas>
+<script>
+
+    let canvas=document.getElementById("myCanvas");
+    let context=canvas.getContext("2d");
+let bullet=new Bullet("dan.png",50,50,50,50);
+let hero=new Hero('contra.png',522,300,100,100);
+    function draw(){
+bullet.drawBullet();
+hero.drawHero();}
+    draw();
+</script>
+</body>
+</html>

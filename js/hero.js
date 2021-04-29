@@ -2,7 +2,7 @@ const CHIEU_CAO_NHAN_VAT=100;
 const CHIEU_RONG_NHAN_VAT=70;
 const HP_NHAN_VAT=60;
 const TOC_DO_NHAN_VAT=10;
-const IMG_HERO="contra1.png";
+const IMG_HERO="./image/contra1.png";
 
 class Hero{
     constructor(x,y) {

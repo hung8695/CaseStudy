@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="bullet.js"></script>
-    <script src="chicken.js"></script>
-    <script src="egg.js"></script>
-    <script src="heart.js"></script>
-    <script src="hero.js"></script>
+    <script src="js/bullet.js"></script>
+    <script src="js/chicken.js"></script>
+    <script src="js/egg.js"></script>
+    <script src="js/heart.js"></script>
+    <script src="js/hero.js"></script>
+
 
 </head>
 
@@ -25,7 +26,7 @@
     canvas.height = HEIGHT_CANVAS;
     let context = canvas.getContext("2d");
     let bullets = [];
-    let hero = new Hero( 10, canvas.height / 2 - CHIEU_CAO_NHAN_VAT / 2);
+    let hero = new Hero(10, canvas.height / 2 - CHIEU_CAO_NHAN_VAT / 2);
     let chickens = [];
     let score = 0;
     let eggs = [];
@@ -40,7 +41,7 @@
 
 
     function creatShoot() {
-        let bullet = new Bullet("dan.png", hero.x + hero.width, hero.y + 15);
+        let bullet = new Bullet(hero.x + hero.width, hero.y + 15);
         bullets.push(bullet);
     }
 
@@ -174,10 +175,10 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         drawScore();
         drawBulllet(bullets);
-        boss.drawChicken();
-        boss.moveBoss();
-        // vaChamDanVoiGa();
-        // vaChamVoiHero();
+        // boss.drawChicken();
+        // boss.moveBoss();
+        vaChamDanVoiGa();
+        vaChamVoiHero();
         banTrung();
         vaChamBossVoiDan(bullets);
         randomChickenMove();

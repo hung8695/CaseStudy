@@ -1,5 +1,5 @@
 const DMG_EGG=5;
-const IMG_EGG="trung.png";
+const IMG_EGG="./immage/trung.png";
 const HP_EGG=10;
 const WIDTH_EGG = 20;
 const HEIGHT_EGG = 20;

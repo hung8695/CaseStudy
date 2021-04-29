@@ -4,140 +4,123 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="bullet.js"></script>
-    <script src="hero.js"></script>
     <script src="chicken.js"></script>
     <script src="egg.js"></script>
+    <script src="heart.js"></script>
+    <script src="hero.js"></script>
+
 </head>
 
-<body >
-<canvas id="myCanvas"  style="background: burlywood ;border: 1px solid black">
+<body>
+<canvas id="myCanvas" style="background: burlywood ;border: 1px solid black">
 </canvas>
 <br/>
 
-<!--    <span>Score</span><p id="score"></p>-->
 
 <script>
-    const WIDTH_CANVAS=1600;
-    const HEIGHT_CANVAS=800;
-    let canvas=document.getElementById("myCanvas");
-    canvas.width=WIDTH_CANVAS;
-    canvas.height=HEIGHT_CANVAS;
-    let context=canvas.getContext("2d");
-    let bullets=[];
-    let hero=new Hero('contra1.png',10,canvas.height/2-CHIEU_CAO_NHAN_VAT/2);
-    let chickens=[];
-    let score=0;
-    let eggs=[];
-    let index=0;
-    let hearts=[];
+    const WIDTH_CANVAS = 1600;
+    const HEIGHT_CANVAS = 800;
+    let canvas = document.getElementById("myCanvas");
+    canvas.width = WIDTH_CANVAS;
+    canvas.height = HEIGHT_CANVAS;
+    let context = canvas.getContext("2d");
+    let bullets = [];
+    let hero = new Hero( 10, canvas.height / 2 - CHIEU_CAO_NHAN_VAT / 2);
+    let chickens = [];
+    let score = 0;
+    let eggs = [];
+    let index = 0;
+    let hearts = [];
 
 
-    function drawScore(){
-        context.font='20px Georgia';
-        context.fillText("Score: "+score,700,30);
+    function drawScore() {
+        context.font = '20px Georgia';
+        context.fillText("Score: " + score, 700, 30);
     }
 
-    // function creatEgg(chickens){
-    //     let egg=new Egg(chickens[index].x,chickens[index].y);
-    //     eggs.push(egg);
-    // }
-    //
-    // function drawEggs(chickens){
-    //     for (let i = 0; i < chickens.length; i++) {
-    //
-    //     }
-    // }
 
-    function creatShoot(){
-        let bullet=new Bullet("dan.png",hero.x+hero.width,hero.y+15);
+    function creatShoot() {
+        let bullet = new Bullet("dan.png", hero.x + hero.width, hero.y + 15);
         bullets.push(bullet);
     }
 
 
-    function drawBulllet(bullets){
+    function drawBulllet(bullets) {
         for (let i = 0; i < bullets.length; i++) {
             bullets[i].drawBullet();
             bullets[i].moveBullet();
         }
     }
 
-    // function upSpeedChicken(){
-    //     while(true){
-    //         if
-    //     }
-    // }
-
-
-    function creatChicken(){
-        let chicken1=new Chicken(1600,randomNumber(HEIGHT_CHICKEN,canvas.height-HEIGHT_CHICKEN));
+    function creatChicken() {
+        let chicken1 = new Chicken(1600, randomNumber(HEIGHT_CHICKEN, canvas.height - HEIGHT_CHICKEN));
         chickens.push(chicken1);
-        // if(score%15==0){
-        //     chicken1.speed+=10;
-        // }
     }
-    let a= setInterval(creatChicken,2000);
+
+    let a = setInterval(creatChicken, 2000);
 
 
-        let boss=new Chicken(1250,canvas.height/2);
-        boss.hp=10*HP_CHICKEN;
-        boss.width=WIDTH_CHICKEN*5;
-        boss.height=HEIGHT_CHICKEN*5;
-        boss.dmg=DMG_CHICKEN*2;
+    let boss = new Chicken(1250, canvas.height / 2);
+    boss.hp = 10 * HP_CHICKEN;
+    boss.width = WIDTH_CHICKEN * 5;
+    boss.height = HEIGHT_CHICKEN * 5;
+    boss.dmg = DMG_CHICKEN * 2;
 
-    function createEgg(){
-       let egg=new Egg(boss.x,boss.y);
+    function createEgg() {
+        let egg = new Egg(boss.x, boss.y);
         eggs.push(egg);
     }
-    setInterval(createEgg,2000)
-    function banTrung(eggs){
-        for (let i = 0; i <eggs ; i++) {
+
+    setInterval(createEgg, 2000)
+
+    function banTrung(eggs) {
+        for (let i = 0; i < eggs; i++) {
             eggs[i].drawEgg();
             eggs[i].moveEgg()
         }
     }
 
-
-    function randomChickenMove(){
+    function randomChickenMove() {
         for (let i = 0; i < chickens.length; i++) {
             chickens[i].moveChicken();
             chickens[i].drawChicken();
         }
     }
 
-    function vaChamVoiHero(){
-        for (let i = 0; i <chickens.length ; i++) {
-            if(chickens[i].x<=0){
-                hero.hp-=chickens[i].dmg;
-              break;
+    function vaChamVoiHero() {
+        for (let i = 0; i < chickens.length; i++) {
+            if (chickens[i].x <= 0) {
+                hero.hp -= chickens[i].dmg;
+                break;
             }
-            if(kiemTraVaCham(chickens[i],hero)){
-                chickens.splice(i,1);
-                hero.hp-=chickens[i].dmg;
+            if (kiemTraVaCham(chickens[i], hero)) {
+                chickens.splice(i, 1);
+                hero.hp -= chickens[i].dmg;
             }
 
 
         }
     }
 
-    function vaChamBossVoiDan(bullets){
-        for (let i = 0; i <bullets.length ; i++) {
-            if(kiemTraVaCham(bullets[i],boss)){
-                boss.hp-=bullets[i].dmg;
-                bullets.splice(i,1);
+    function vaChamBossVoiDan(bullets) {
+        for (let i = 0; i < bullets.length; i++) {
+            if (kiemTraVaCham(bullets[i], boss)) {
+                boss.hp -= bullets[i].dmg;
+                bullets.splice(i, 1);
             }
         }
     }
 
-    function vaChamDanVoiGa(){
+    function vaChamDanVoiGa() {
         for (let i = 0; i < chickens.length; i++) {
             for (let j = 0; j < bullets.length; j++) {
-                if (kiemTraVaCham( bullets[j],chickens[i])) {
+                if (kiemTraVaCham(bullets[j], chickens[i])) {
                     chickens[i].hp -= bullets[j].dmg;
-                    bullets.splice(j,1);
-                    if(chickens[i].hp<=0){
+                    bullets.splice(j, 1);
+                    if (chickens[i].hp <= 0) {
                         score++;
-                        chickens.splice(i,1);
-                        document.getElementById("score").innerHTML=score;
+                        chickens.splice(i, 1);
+                        document.getElementById("score").innerHTML = score;
                     }
                 }
             }
@@ -146,69 +129,61 @@
 
 
     function kiemTraVaCham(a, b) {
-       if(((a.y + a.height) < (b.y)) ||
-           (a.y > (b.y + b.height)) ||
-           ((a.x + a.width) < b.x) ||
-           (a.x > (b.x + b.width))
-           // a.x>(b.x+b.height)
-       )
-       {
-                 return false;
-       } else{
-           return true;
-       }
+        if (((a.y + a.height) < (b.y)) ||
+            (a.y > (b.y + b.height)) ||
+            ((a.x + a.width) < b.x) ||
+            (a.x > (b.x + b.width))
+            // a.x>(b.x+b.height)
+        ) {
+            return false;
+        } else {
+            return true;
+        }
 
     }
 
 
-
-    document.addEventListener("keyup", key=>{
-        if(key.keyCode==38){
-            hero.isMovingUp=false
-        } else if(key.keyCode==40){
-            hero.isMovingDown=false;
+    document.addEventListener("keyup", key => {
+        if (key.keyCode == 38) {
+            hero.isMovingUp = false
+        } else if (key.keyCode == 40) {
+            hero.isMovingDown = false;
         }
     })
 
-    document.addEventListener("keydown",key=>{
-        if(key.keyCode==38){
-            hero.isMovingUp=true;
+    document.addEventListener("keydown", key => {
+        if (key.keyCode == 38) {
+            hero.isMovingUp = true;
             hero.moveU()
-        } else if(key.keyCode==40){
-            hero.isMovingDown=true;
+        } else if (key.keyCode == 40) {
+            hero.isMovingDown = true;
             hero.moveD()
+        } else if (key.keyCode == 32) {
+            creatShoot();
         }
 
-         else if(key.keyCode==32){
-            creatShoot();
-    }
+    })
 
-})
-
-    function randomNumber(min,max) {
-        return Math.floor(Math.random()*(max-min))+min;
+    function randomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
     }
 
 
-   window.onload= function draw(){
-    requestAnimationFrame(draw);
-    context.clearRect(0,0,canvas.width,canvas.height);
-    drawScore();
-    drawBulllet(bullets);
-    // if(score==20){
-    //     drawBoss();
-    // }
-       boss.drawChicken();
-       boss.moveBoss();
-       vaChamDanVoiGa();
-       vaChamVoiHero();
-       banTrung();
+    window.onload = function draw() {
+        requestAnimationFrame(draw);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawScore();
+        drawBulllet(bullets);
+        boss.drawChicken();
+        boss.moveBoss();
+        // vaChamDanVoiGa();
+        // vaChamVoiHero();
+        banTrung();
         vaChamBossVoiDan(bullets);
         randomChickenMove();
-    hero.drawHero();
+        hero.drawHero();
 
     }
-
     draw();
 
 </script>

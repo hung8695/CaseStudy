@@ -17,15 +17,12 @@ class Egg{
         this.height=HEIGHT_EGG;
     }
     drawEgg(){
-        // context.save();
-        // context.translate(this.x,this.y);
-        // context.rotate(this.radian*(Math.PI/180));
-        // context.translate(this.x/-2,this.y/-2);
+
         context.drawImage(this.img,this.x,this.y,this.width,this.height);
 
     }
     moveEgg(){
-        // this.radian+=1*Math.PI/180;
+
         this.x-=1;
     }
 

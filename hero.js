@@ -2,13 +2,12 @@ const CHIEU_CAO_NHAN_VAT=100;
 const CHIEU_RONG_NHAN_VAT=70;
 const HP_NHAN_VAT=60;
 const TOC_DO_NHAN_VAT=10;
-const SIZE_NHAN_VAT=50
-
+const IMG_HERO="contra1.png";
 
 class Hero{
-    constructor(img,x,y) {
+    constructor(x,y) {
         this.img=new Image();
-        this.img.src=img;
+        this.img.src=IMG_HERO;
         this.x=x;
         this.y=y;
         this.width=CHIEU_RONG_NHAN_VAT;
@@ -17,7 +16,6 @@ class Hero{
         this.hp=HP_NHAN_VAT;
         this.isMovingUp=false;
         this.isMovingDown=false;
-        this.size=SIZE_NHAN_VAT;
     }
     drawHero(){
         context.drawImage(this.img,this.x,this.y,this.width,this.height);

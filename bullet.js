@@ -1,18 +1,27 @@
+const CHIEU_RONG_VIEN_DAN=40;
+const CHIEU_DAI_VIEN_DAN=40;
+const TOC_DO_DAN_BAY=10;
+const SAT_THUONG_VIEN_DAN=20;
+
+
+
+
 class Bullet {
-    constructor(img, x, y, w, h) {
-        this.img=new Image();
+    constructor(img, x, y) {
+        this.img = new Image();
         this.img.src = img;
         this.x = x;
         this.y = y;
-        this.w = w;
-        this.h = h;
-        this.speed = 5;
-        this.dmg = 10;
+        this.width = CHIEU_RONG_VIEN_DAN;
+        this.height = CHIEU_DAI_VIEN_DAN;
+        this.speed = TOC_DO_DAN_BAY;
+        this.dmg = SAT_THUONG_VIEN_DAN;
     }
-    drawBullet(){
-            context.drawImage(this.img,this.x,this.y,this.w,this.h)
+
+    drawBullet() {
+        context.drawImage(this.img, this.x, this.y,this.width,this.height)
     }
     moveBullet(){
-        this.x-=this.speed;
+        this.x+=this.speed;
     }
 }

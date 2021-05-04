@@ -1,6 +1,6 @@
 const WIDTH_HEART=50;
 const HEIGHT_HEART=50;
-const IMG_HEART="./image/heart.png"
+const IMG_HEART="../image/heart.png"
 
 class Heart{
     constructor(x,y) {

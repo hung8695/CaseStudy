@@ -2,7 +2,7 @@ const CHIEU_RONG_VIEN_DAN=40;
 const CHIEU_DAI_VIEN_DAN=40;
 const TOC_DO_DAN_BAY=10;
 const SAT_THUONG_VIEN_DAN=20;
-const IMG_BULLET="./image/dan.png"
+const IMG_BULLET="../image/dan.png"
 class Bullet {
     constructor( x, y) {
         this.img = new Image();

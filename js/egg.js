@@ -1,8 +1,9 @@
-const DMG_EGG=5;
-const IMG_EGG="./immage/trung.png";
+const DMG_EGG=10;
+const IMG_EGG="../image/trung.png";
 const HP_EGG=10;
-const WIDTH_EGG = 20;
-const HEIGHT_EGG = 20;
+const WIDTH_EGG = 60;
+const HEIGHT_EGG = 60;
+const SPEED_EGG=5;
 
 class Egg{
     constructor(x,y) {
@@ -15,15 +16,14 @@ class Egg{
         // this.radian=0;
         this.width=WIDTH_EGG;
         this.height=HEIGHT_EGG;
+        this.speed=SPEED_EGG;
     }
     drawEgg(){
-
         context.drawImage(this.img,this.x,this.y,this.width,this.height);
 
     }
     moveEgg(){
-
-        this.x-=1;
+        this.x-=this.speed;
     }
 
 }

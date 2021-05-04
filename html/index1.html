@@ -3,8 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-</head>
-<body style="background: burlywood">
+    <script src="../js/boss.js"></script>
+    <script src="../js/bullet.js"></script>
+    <script src="../js/chicken.js"></script>
+    <script src="../js/egg.js"></script>
+    <script src="../js/heart.js"></script>
+    <script src="../js/hero.js"></script>
+    <script src="../js/sound.js"></script>
 
+
+</head>
+<style>
+body{
+    background: url("../image/background1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+</style>
+<body>
+<audio id="audio"></audio>
+<canvas id="myCanvas" >
+</canvas>
+<br/>
+
+
+<script>
+    const WIDTH_CANVAS = 1600;
+    const HEIGHT_CANVAS = 800;
+    let canvas = document.getElementById("myCanvas");
+    canvas.width = WIDTH_CANVAS;
+    canvas.height = HEIGHT_CANVAS;
+    let context = canvas.getContext("2d");
+    let bullets = [];
+    let hero = new Hero(10, canvas.height / 2 - CHIEU_CAO_NHAN_VAT / 2);
+    let chickens = [];
+    let score = 0;
+    let eggs = [];
+    let index = 0;
+    let hearts = [];
+    soundCrash = new sound("../sound/bup.mp3");
+    soundCrash1 = new sound("../sound/sung.mp3");
+    let boss = new Boss(1250, canvas.height / 2);
+
+    function drawScore() {
+        context.font = '20px Georgia';
+        context.fillText("Score: " + score, 700, 30);
+    }
+
+
+    function creatShoot() {
+        let bullet = new Bullet(hero.x + hero.width, hero.y + 15);
+        bullets.push(bullet);
+    }
+
+    function drawBulllet(bullets) {
+        for (let i = 0; i < bullets.length; i++) {
+            bullets[i].drawBullet();
+            bullets[i].moveBullet();
+        }
+    }
+
+    function creatChicken() {
+        let chicken = new Chicken(1600, randomNumber(HEIGHT_CHICKEN, canvas.height - HEIGHT_CHICKEN));
+        chickens.push(chicken);
+    }
+
+    let a = setInterval(creatChicken, 2000);
+
+
+    function drawAndMoveBoss() {
+        if (score >= 30) {
+            boss.drawBoss();
+            boss.moveBoss();
+            vaChamBossVoiDan(bullets);
+            banTrung(eggs);
+            vaChamTrungVoiHero();
+            clearInterval(a);
+            if (boss.hp <= 0) {
+                clearInterval(b);
+                score+=1000;
+            }
+        }
+    }
+
+    function createEgg() {
+        let egg = new Egg(boss.x, boss.y);
+        eggs.push(egg);
+    }
+
+    let b = setInterval(createEgg, 2000)
+
+    function banTrung(eggs) {
+        for (let i = 0; i < eggs.length; i++) {
+            eggs[i].drawEgg();
+            eggs[i].moveEgg();
+        }
+    }
+
+    function randomChickenMove() {
+        for (let i = 0; i < chickens.length; i++) {
+            chickens[i].moveChicken();
+            chickens[i].drawChicken();
+            if(chickens[i].x<=0){
+                soundCrash.play();
+                chickens.splice(i,1);
+                hero.hp-=chickens[i].hp;
+            }
+        }
+    }
+
+    function vaChamTrungVoiHero() {
+        for(let i=0;i<eggs.length;i++){
+            if(kiemTraVaCham(eggs[i],hero)){
+                eggs.splice(i,1);
+                hero.hp-=eggs[i].dmg;
+                soundCrash1.play();
+            }
+        }
+    }
+
+    function vaChamGaVoiHero() {
+        for (let i = 0; i < chickens.length; i++) {
+            if (kiemTraVaCham(chickens[i], hero)) {
+                chickens.splice(i, 1);
+                hero.hp -= chickens[i].dmg;
+                soundCrash.play();
+            }
+        }
+    }
+
+    function vaChamBossVoiDan(bullets) {
+        for (let i = 0; i < bullets.length; i++) {
+            if (kiemTraVaCham(bullets[i], boss)) {
+                boss.hp -= bullets[i].dmg;
+                bullets.splice(i, 1);
+                soundCrash.play();
+            }
+        }
+    }
+
+    function vaChamDanVoiGa() {
+        for (let i = 0; i < chickens.length; i++) {
+            for (let j = 0; j < bullets.length; j++) {
+                if (kiemTraVaCham(bullets[j], chickens[i])) {
+                    chickens[i].hp -= bullets[j].dmg;
+                    bullets.splice(j, 1);
+                    soundCrash.play();
+                    if (chickens[i].hp <= 0) {
+                        score++;
+                        chickens.splice(i, 1);
+                    }
+                }
+            }
+        }
+    }
+
+
+    function kiemTraVaCham(a, b) {
+        if (((a.y + a.height) < (b.y)) ||
+            (a.y > (b.y + b.height)) ||
+            ((a.x + a.width) < b.x) ||
+            (a.x > (b.x + b.width))
+        ) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+
+    document.addEventListener("keyup", key => {
+        if (key.keyCode == 38) {
+            hero.isMovingUp = false
+        } else if (key.keyCode == 40) {
+            hero.isMovingDown = false;
+        }
+    })
+
+    document.addEventListener("keydown", key => {
+        if (key.keyCode == 38) {
+            hero.isMovingUp = true;
+            hero.moveU()
+        } else if (key.keyCode == 40) {
+            hero.isMovingDown = true;
+            hero.moveD()
+        } else if (key.keyCode == 32) {
+            creatShoot();
+            soundCrash1.stop();
+            soundCrash1.play();
+        }
+
+    })
+
+    function randomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    function checkOver(){
+        if(hero.hp<=0 || boss.hp<=0){
+            return false;
+        } else {
+            return true
+        }
+    }
+
+    window.onload = function draw() {
+        if(checkOver()) {
+            requestAnimationFrame(draw);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawScore();
+            drawBulllet(bullets);
+            drawAndMoveBoss();
+            vaChamDanVoiGa();
+            vaChamGaVoiHero();
+            randomChickenMove();
+            hero.drawHero();
+        }
+        else {
+            alert("Game over!");
+            alert("Số điểm bạn đạt được là: " + score);
+            window.location.reload();
+        }
+
+
+    }
+
+
+
+
+</script>
 </body>
 </html>
